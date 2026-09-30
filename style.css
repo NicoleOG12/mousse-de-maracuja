@@ -1,0 +1,259 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background: #fffdf5;
+    color: #403c2f;
+    font-family: "DM Sans", sans-serif;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+}
+
+.pagina {
+    width: 100%;
+    max-width: 1000px;
+    min-height: 100vh;
+    padding: 55px 30px 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.sementes {
+    position: absolute;
+    display: flex;
+    gap: 6px;
+    color: #d9a928;
+    font-size: 18px;
+    opacity: 0.8;
+}
+
+.sementes-top {
+    top: 35px;
+    right: 90px;
+    transform: rotate(-15deg);
+}
+
+.sementes span:nth-child(2) {
+    transform: translateY(5px);
+}
+
+.sementes span:nth-child(3) {
+    transform: translateY(-3px);
+}
+
+.detalhe-lateral {
+    position: absolute;
+    width: 90px;
+    height: 1px;
+    background: #e4d9ae;
+    opacity: 0.6;
+}
+
+.detalhe-esquerdo {
+    left: -35px;
+    top: 48%;
+}
+
+.detalhe-direito {
+    right: -35px;
+    top: 55%;
+}
+
+.cabecalho {
+    text-align: center;
+    margin-top: 10px;
+    position: relative;
+    z-index: 5;
+}
+
+.mini-titulo {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #8d9272;
+    margin-bottom: 13px;
+}
+
+h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(42px, 7vw, 72px);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: -2px;
+    color: #3f3b2f;
+}
+
+h1 span {
+    display: block;
+    color: #d89c18;
+}
+
+.sobremesa {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.imagem-container {
+    width: min(500px, 82vw);
+    height: min(500px, 82vw);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagem-mousse {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    object-fit: contain;
+    position: relative;
+    z-index: 3;
+    filter: drop-shadow(
+        0 25px 25px rgba(96, 71, 15, 0.14)
+    );
+    animation: flutuar 5s ease-in-out infinite;
+    transition:
+        transform 0.4s ease,
+        filter 0.4s ease;
+}
+
+.imagem-mousse:hover {
+    transform: translateY(-8px) rotate(-1deg);
+    filter: drop-shadow(
+        0 35px 35px rgba(96, 71, 15, 0.18)
+    );
+}
+
+.brilho {
+    position: absolute;
+    border-radius: 50%;
+    background: #f1c94a;
+    opacity: 0.35;
+    z-index: 1;
+}
+
+.brilho-1 {
+    width: 10px;
+    height: 10px;
+    top: 18%;
+    left: 15%;
+}
+
+.brilho-2 {
+    width: 6px;
+    height: 6px;
+    right: 15%;
+    bottom: 24%;
+}
+
+.descricao {
+    text-align: center;
+    margin-top: -15px;
+    position: relative;
+    z-index: 5;
+}
+
+.descricao p {
+    font-family: "Playfair Display", serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #625d4d;
+}
+
+.linha {
+    width: 45px;
+    height: 1px;
+    background: #d9bd68;
+    margin: 17px auto;
+}
+
+.descricao .detalhe {
+    font-family: "DM Sans", sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #9b9a7c;
+}
+
+footer {
+    margin-top: auto;
+    padding-top: 40px;
+    display: flex;
+    gap: 12px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #aaa68f;
+}
+
+@keyframes flutuar {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-7px) rotate(0.5deg);
+    }
+
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+@media (max-width: 600px) {
+    .pagina {
+        padding: 40px 20px 25px;
+    }
+
+    .sementes-top {
+        top: 20px;
+        right: 30px;
+    }
+
+    h1 {
+        font-size: 43px;
+    }
+
+    .sobremesa {
+        margin-top: 15px;
+    }
+
+    .imagem-container {
+        width: 90vw;
+        height: 90vw;
+    }
+
+    .imagem-mousse {
+        max-width: 420px;
+    }
+
+    .descricao {
+        margin-top: -10px;
+    }
+
+    .descricao p {
+        font-size: 16px;
+    }
+
+    .detalhe-lateral {
+        display: none;
+    }
+
+    footer {
+        padding-top: 30px;
+    }
+}
