@@ -28,11 +28,14 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/mousse-de-maracuja:latest
 
       - name: Configurar chave SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
           mkdir -p ~/.ssh
-          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
 
       - name: Deploy no servidor Azure
         env:
@@ -43,4 +46,7 @@ jobs:
           ssh -i ~/.ssh/id_rsa \
             -o StrictHostKeyChecking=yes \
             "$SSH_USER@$SSH_HOST" \
-            "docker pull $DOCKER_USERNAME/mousse-de-maracuja:latest && docker rm -f mousse-de-maracuja 2>/dev/null || true"
+            "docker pull $DOCKER_USERNAME/mousse-de-maracuja:latest &&
+             (docker rm -f mousse-de-maracuja 2>/dev/null || true) &&
+             docker run -d --name mousse-de-maracuja --restart unless-stopped -p 8083:80 $DOCKER_USERNAME/mousse-de-maracuja:latest &&
+             docker ps --filter name=mousse-de-maracuja"
