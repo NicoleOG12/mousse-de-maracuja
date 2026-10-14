@@ -46,7 +46,42 @@ jobs:
           ssh -i ~/.ssh/id_rsa \
             -o StrictHostKeyChecking=yes \
             "$SSH_USER@$SSH_HOST" \
-            "docker pull $DOCKER_USERNAME/mousse-de-maracuja:latest &&
-             (docker rm -f mousse-de-maracuja 2>/dev/null || true) &&
-             docker run -d --name mousse-de-maracuja --restart unless-stopped -p 8083:80 $DOCKER_USERNAME/mousse-de-maracuja:latest &&
-             docker ps --filter name=mousse-de-maracuja"
+            "set -e
+             IMAGE='$DOCKER_USERNAME/mousse-de-maracuja:latest'
+             CONTAINER='mousse-de-maracuja'
+
+             docker pull \"\$IMAGE\"
+
+             (docker rm -f \"\$CONTAINER\" >/dev/null 2>&1 || true)
+
+             PORT=8083
+             MAX_PORT=8099
+             FOUND=0
+
+             while [ \"\$PORT\" -le \"\$MAX_PORT\" ]; do
+               if ! sudo ss -ltnH \"sport = :\$PORT\" | grep -q .; then
+                 if ! docker ps --format '{{.Ports}}' | grep -E \"0\\.0\\.0\\.0:\$PORT->|\\*:\$PORT->\" >/dev/null; then
+                   FOUND=1
+                   break
+                 fi
+               fi
+
+               PORT=\$((PORT + 1))
+             done
+
+             if [ \"\$FOUND\" -ne 1 ]; then
+               echo 'Nenhuma porta livre encontrada entre 8083 e 8099.'
+               exit 1
+             fi
+
+             echo \"Porta escolhida: \$PORT\"
+
+             docker run -d \
+               --name \"\$CONTAINER\" \
+               --restart unless-stopped \
+               -p \"\$PORT:80\" \
+               \"\$IMAGE\"
+
+             docker ps --filter name=\"\$CONTAINER\"
+
+             echo \"PORTA_DEPLOY=\$PORT\""
